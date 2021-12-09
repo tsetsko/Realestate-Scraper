@@ -6,6 +6,7 @@ import time
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from database_write import Property
+import sqlite3
 
 
 PATH = '/Applications/chromedriver'
@@ -49,11 +50,18 @@ link_for_offer = []
 intermediate_prices = []
 
 def get_data(link):
-    old_df = pd.read_csv('/Users/tdonov/Desktop/Python/Realestate Scraper/master_data_for_realestateXXX.csv')
     soup1 = getdata(link)
     for one_offer in soup1.find_all('li', {'class': 'clearfix'}):
-        new_instance = Property()
+        def get_db():
+            connection = sqlite3.connect('lite.db')
+            cursor = connection.cursor()
+            connection = sqlite3.connect('real_estate_data.db')
+            cursor = connection.cursor()
+            cursor.execute("CREATE TABLE IF NOT EXISTS real_data (item TEXT, quantity INTEGER, price REAL)")
 
+        get_db()
+
+        new_instance = Property()
 
         # Get the links:
         link_to_add = 'https://www.imoti.net'
@@ -109,9 +117,12 @@ def get_data(link):
         # description.append(raw_description)
         new_instance.description = raw_description
 
-        #
-        old_df = old_df.append(new_instance, ignore_index=True)
-        old_df.to_csv('/Users/tdonov/Desktop/Python/Realestate Scraper/master_data_for_realestateXXX.csv', index=False)
+        def db_commit():
+            connection = sqlite3.connect('real_estate_data.db')
+            connection.commit()
+            connection.close()
+
+        db_commit()
 
 
 # Get IDs for each real estate

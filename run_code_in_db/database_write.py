@@ -2,12 +2,18 @@ from sqlalchemy import Column, Integer, Unicode, UnicodeText, String
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+import sqlite3
 
 engine = create_engine('real_estate_data.db', echo=True)
 Base = declarative_base(bind=engine)
 
 
-class Property(Base):
+class Property:
+	# def get_db(self):
+	# 	connection = sqlite3.connect('real_estate_data.db')
+	# 	cursor = connection.cursor()
+	# 	cursor.execute("CREATE TABLE IF NOT EXISTS real_data (item TEXT, quantity INTEGER, price REAL)")
+
 	__tablename__ = 'realestate_data'
 	id = Column(Integer, primary_key=True)
 	id_property = Column(Integer)
@@ -35,6 +41,11 @@ class Property(Base):
 		self.published_by = published_by
 		self.description = description
 		self.link = link
+
+	# def db_commit(self):
+	# 	connection = sqlite3.connect('real_estate_data.db')
+	# 	connection.commit()
+	# 	connection.close()
 
 
 Base.metadata.create_all()
