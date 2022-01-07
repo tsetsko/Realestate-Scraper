@@ -169,5 +169,3 @@ dataframe_for_cvs = pd.DataFrame(dataframe_for_csv_file_structure)
 old_df = pd.read_csv('/Users/tdonov/Desktop/Python/Realestate Scraper/master_data_for_realestate.csv')
 old_df = old_df.append(dataframe_for_cvs, ignore_index=True)
 old_df.to_csv('/Users/tdonov/Desktop/Python/Realestate Scraper/master_data_for_realestate.csv', index=False)
-
-# Test the commits
